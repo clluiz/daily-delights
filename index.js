@@ -9,6 +9,8 @@ const macarrao = require("./macarrao.json")
 const feijao = require("./feijao.json")
 
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const xorshift = require('xorshift');
+
 const csvWriter = createCsvWriter({
   path: './cardapio.csv',
   header: [
@@ -22,7 +24,7 @@ const csvWriter = createCsvWriter({
 });
 
 function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  return Math.floor(xorshift.random() * (max - min + 1)) + min;
 }
 
 function getMenu(dia, proteína) {
