@@ -1,12 +1,25 @@
-const boi = require("./proteína/boi.json")
-const porco = require("./proteína/porco.json")
-const frango = require("./proteína/frango.json")
-const peixe = require("./proteína/peixe.json")
+const boi = require("./proteinas/boi.json")
+const porco = require("./proteinas/porco.json")
+const frango = require("./proteinas/frango.json")
+const peixe = require("./proteinas/peixe.json")
 const verduras = require("./verduras.json")
 const legumes = require("./legumes.json")
 const arroz = require("./arroz.json")
 const macarrao = require("./macarrao.json")
 const feijao = require("./feijao.json")
+
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const csvWriter = createCsvWriter({
+  path: './cardapio.csv',
+  header: [
+    {id: 'dia', title: 'Dia'},
+    {id: 'verdura', title: 'Verdura'},
+    {id: 'proteina', title: 'Proteína'},
+    {id: 'legume', title: 'Legume'},
+    {id: 'carboidrato', title: 'Carboidrato'},
+    {id: "feijao", title: "Feijão"}
+]
+});
 
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -34,4 +47,12 @@ function generate() {
     ]
 }
 
-console.table(generate(), ["dia", "verdura", "proteina", "legume", "feijao", "carboidrato"])
+const menu = generate()
+
+csvWriter.writeRecords(menu)
+    .then(() => {
+      console.log("Voilá! Seu cardápio foi gerado!")
+      console.table(menu, ["dia", "verdura", "proteina", "legume", "feijao", "carboidrato"])
+    });
+
+
